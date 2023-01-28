@@ -29,9 +29,9 @@ inner join min_data m on m.player_id = a2.player_id and m.event_date = a2.event_
  * https://leetcode.com/problems/game-play-analysis-ii/solutions/2763855/game-play-analysis-ii/
  */
 with ranked_logins as 
-(select a.player_id, a.device_id rank() over 
+(select a.player_id, a.device_id, rank() over 
 (partition by a.player_id order by a.event_date) as rnk from Activity a) 
-select rl.player_id, rl.device_id from ranked_logins rl where rl.rank = 1;
+select rl.player_id, rl.device_id from ranked_logins rl where rl.rnk = 1;
 
 
 
@@ -48,6 +48,6 @@ select distinct a.player_id, first_value(a.device_id) over
  * Approach 5 from 
  * https://leetcode.com/problems/game-play-analysis-ii/solutions/2763855/game-play-analysis-ii/
  */
- select distinct a.plyer_id, last_value(a.device_id) over 
- (partition by a.player_id order by a.event_date desc range between unbounded preceding and 
- unbounded following) as device_id from Activity a;
+select distinct a.player_id, last_value(a.device_id) over 
+(partition by a.player_id order by a.event_date desc range between unbounded preceding and 
+unbounded following) as device_id from Activity a;
