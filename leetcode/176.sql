@@ -14,7 +14,7 @@ as SecondHighestSalary;
 
 
 /*
- * Approach 1 from 
+ * Approach from 
  * https://leetcode.com/problems/second-highest-salary/solutions/1168444/summary-five-ways-to-solve-the-top-n-nth-problems/
  */
 select distinct max(salary) as SecondHighestSalary from Employee e1 where salary < 
@@ -23,7 +23,7 @@ select distinct max(salary) as SecondHighestSalary from Employee e1 where salary
 
 
 /*
- * Approach 2 from 
+ * Approach from 
  * https://leetcode.com/problems/second-highest-salary/solutions/1168444/summary-five-ways-to-solve-the-top-n-nth-problems/
  */
 with cte as 
@@ -33,8 +33,17 @@ select max(salary) as SecondHighestSalary from cte where desc_rank = 2;
 
 
 /*
- * Approach 3 from 
+ * Approach from 
  * https://leetcode.com/problems/second-highest-salary/solutions/1168444/summary-five-ways-to-solve-the-top-n-nth-problems/
  */
 select ifnull((select distinct salary from Employee order by salary desc limit 1, 1), null) 
 as SecondHighestSalary;
+
+
+
+/*
+ * Approach from -> 
+ * https://leetcode.com/problems/second-highest-salary/editorial/comments/155888
+ */
+select max(salary) as SecondHighestSalary from Employee where salary not in 
+(select max(salary) from Employee);
